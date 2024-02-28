@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import CardBase from "../Card/CardBase";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import { login } from "../../api/api";
+import logo from "../../assets/golfmate.png";
+import { PulseLoader } from "react-spinners";
 
 type LoginCardProps = {
   className?: string;
@@ -13,6 +15,7 @@ export default function LoginCard({ className }: LoginCardProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
 
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -22,33 +25,41 @@ export default function LoginCard({ className }: LoginCardProps) {
     setPassword(event.target.value);
   };
 
+  const handleLoginError = (res: Response) => {
+    if (res.status === 401) {
+      // do something
+    }
+    setErrorMessage(
+      "Error with login. Please check your eamil or password"
+    );
+  }
+
   const handleLogin = (event: React.MouseEvent<HTMLElement>) => {
     console.log(email, password);
     event.preventDefault();
+    setIsLoggingIn(true);
     login(email, password)
       .then((res) => {
+        setIsLoggingIn(false);
         if (!res.ok) {
-          setErrorMessage(
-            "Error with login. Please check your eamil or password"
-          );
-          return;
+          handleLoginError(res)
+          return false;
         }
         setErrorMessage(null);
         // redirect after successful login
       })
       .catch((error: Error) => {
-        console.log(error);
-        if (error.message === "401") {
-          setErrorMessage(
-            "Error with login. Please check your eamil or password"
-          );
-        }
+        // handle errors?
+        setErrorMessage(error.message);
+        console.error(error);
       });
+    return false;
   };
 
   return (
     <CardBase className={className}>
       <div className="text-3xl font-sans mb-4">
+        <img src={logo} height={12} width={12} />
         <span className="font-extrabold">GOLF</span>MATE
       </div>
       <span>
@@ -82,7 +93,7 @@ export default function LoginCard({ className }: LoginCardProps) {
             onClick={handleLogin}
             className="text-lg font-bold w-80 h-12 text-white rounded bg-green-600"
           >
-            Log In
+            { isLoggingIn ? <PulseLoader size={8} color="#ffffff"/> : <p>Log In</p>}
           </ButtonBase>
         </form>
         <span className="mt-4 mb-2">
