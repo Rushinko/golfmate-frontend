@@ -1,12 +1,13 @@
-import * as React from "react";
+import { InputHTMLAttributes, PropsWithChildren } from "react";
 
-type ButtonBaseProps = {
-  className?: string,
-};
+interface ButtonBaseProps extends React.ComponentPropsWithoutRef<"button"> {
+  className?: string;
+}
 
 export default function ButtonBase({
   children,
-  className
-}: React.PropsWithChildren<ButtonBaseProps>) {
-  return <button className={`w-32 h-8 ${className}`} >{children}</button>;
+  className,
+  ...rest
+}: PropsWithChildren<ButtonBaseProps>) {
+  return <button className={`w-32 ${className}`} {...rest}>{children}</button>;
 }

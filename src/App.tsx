@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import { getUser, singIn } from "./api/api";
+import { getUser, login } from "./api/api";
 import { router } from "./router";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
   };
 
   const handleSignIn = async () => {
-    singIn({ email: "user2@example.com", password: "password123" })
+    login({ email: "user2@example.com", password: "password123" })
       .then((response) => {
         console.log(response.headers.get("Authorization"));
         const authHeader = response.headers.get("Authorization");

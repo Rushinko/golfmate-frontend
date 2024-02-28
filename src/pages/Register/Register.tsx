@@ -1,8 +1,8 @@
 import * as React from "react";
-import { SignUpForm } from "../../models/types";
-import { singUp } from "../../api/api";
+import { TRegisterForm } from "../../models/types";
+import { register } from "../../api/api";
 
-export function SignUp() {
+export function Register() {
   const [firstName, setFirstName] = React.useState<string>('');
   const [lastName, setLastName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
@@ -10,7 +10,7 @@ export function SignUp() {
   const [passwordConfirmation, setPasswordConfirmation] = React.useState<string>('');
   const handleOnSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
-    const user: SignUpForm = {
+    const user: TRegisterForm = {
       first_name: firstName,
       last_name: lastName,
       email: email,
@@ -18,7 +18,7 @@ export function SignUp() {
       password_confirmation: passwordConfirmation,
     };
     console.log(user);
-    singUp(user)
+    register(user)
       .then((response) => {
         console.log(response);
       })

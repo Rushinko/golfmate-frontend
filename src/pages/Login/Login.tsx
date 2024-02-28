@@ -1,12 +1,10 @@
 import * as React from "react";
-import LoginButton from "../../components/Buttons/LoginButton";
 import { getGolfCourseImage } from "../../api/api";
 import { type Image } from "../../models/types";
-import LandingCard from "../../components/LandingCard/LandingCard";
-import LandingText from "../../components/LandingCard/LandingText";
-import image from '../../assets/golfcourse.jpg'
+import LoginCard from "../../components/LoginCard/LoginCard";
+import image from '../../assets/golfcourse.jpeg'
 
-function Landing() {
+function Login() {
   const [backgroundImg, setBackgroundImg] = React.useState<Image | null>(null);
 
   React.useEffect(() => {
@@ -22,16 +20,16 @@ function Landing() {
   }, []);
 
   return (
-    backgroundImg && (
+    image && (
       <div
-        className="h-full w-full justify-center items-center grid grid-cols-3 backdrop-blur-sm"
+        className="h-full w-full flex justify-center items-center backdrop-blur-sm bg-green-700/10"
         style={{ backgroundImage: `url(${image})`, backgroundSize: "cover", backgroundBlendMode: 'overlay', backgroundPositionY: "bottom" }}
       >
-        <LandingText imageUrl={''} className="col-span-2"/>
-        <LandingCard />
+        <LoginCard />
       </div>
     )
   );
+
 }
 
-export default Landing;
+export default Login;

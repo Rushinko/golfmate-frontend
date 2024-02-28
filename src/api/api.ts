@@ -1,11 +1,11 @@
-import { SignUpForm } from "../models/types";
+import { TRegisterForm } from "../models/types";
 
-type signInProps = {
+type loginProps = {
   email: string;
   password: string;
 };
 
-export async function singUp(props: SignUpForm): Promise<Response> {
+export async function register(props: TRegisterForm): Promise<Response> {
   const res = await fetch("http://localhost:3000/users", {
     method: "POST",
     headers: {
@@ -24,10 +24,7 @@ export async function singUp(props: SignUpForm): Promise<Response> {
   return res;
 }
 
-export async function singIn({
-  email,
-  password,
-}: signInProps): Promise<Response> {
+export async function login(email: string, password: string): Promise<Response> {
   const res = await fetch("http://localhost:3000/users/sign_in", {
     method: "POST",
     headers: {

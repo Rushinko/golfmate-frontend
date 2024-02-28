@@ -1,8 +1,13 @@
 import ButtonBase from "./ButtonBase";
 
-export default function LoginButton() {
+type LoginButtonProps = {
+  className?: string,
+}
+
+
+export default function LoginButton({ className }: LoginButtonProps) {
   return(
-    <ButtonBase className="hover:bg-slate-600/30">
+    <ButtonBase className={` ${className}`}>
       Login
     </ButtonBase>
   )

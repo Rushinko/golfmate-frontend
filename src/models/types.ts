@@ -4,7 +4,7 @@ type TUser = {
   email: string,
 }
 
-export type SignUpForm = {
+export type TRegisterForm = {
   first_name: string,
   last_name: string,
   email: string,
