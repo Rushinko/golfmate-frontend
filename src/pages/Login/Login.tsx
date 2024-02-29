@@ -1,7 +1,7 @@
 import * as React from "react";
 import { getGolfCourseImage } from "../../api/api";
 import { type Image } from "../../models/types";
-import LoginCard from "../../components/LoginCard/LoginCard";
+import LoginCard from "../../components/Card/LoginCard";
 import image from '../../assets/golfcourse.jpeg'
 
 function Login() {

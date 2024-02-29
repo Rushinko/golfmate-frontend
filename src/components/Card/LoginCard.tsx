@@ -1,7 +1,7 @@
 import TextInput from "../Forms/TextInput";
 import ButtonBase from "../Buttons/ButtonBase";
-import { Link } from "react-router-dom";
-import CardBase from "../Card/CardBase";
+import { Link, useNavigate } from "react-router-dom";
+import CardBase from "./CardBase";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import { login } from "../../api/api";
 import logo from "../../assets/golfmate.png";
@@ -12,6 +12,7 @@ type LoginCardProps = {
 };
 
 export default function LoginCard({ className }: LoginCardProps) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -38,6 +39,7 @@ export default function LoginCard({ className }: LoginCardProps) {
     console.log(email, password);
     event.preventDefault();
     setIsLoggingIn(true);
+    setErrorMessage(null);
     login(email, password)
       .then((res) => {
         setIsLoggingIn(false);
@@ -46,6 +48,7 @@ export default function LoginCard({ className }: LoginCardProps) {
           return false;
         }
         setErrorMessage(null);
+        navigate('/home')
         // redirect after successful login
       })
       .catch((error: Error) => {
@@ -58,8 +61,7 @@ export default function LoginCard({ className }: LoginCardProps) {
 
   return (
     <CardBase className={className}>
-      <div className="text-3xl font-sans mb-4">
-        <img src={logo} height={12} width={12} />
+      <div className="text-3xl flex flex-row font-sans mb-4">
         <span className="font-extrabold">GOLF</span>MATE
       </div>
       <span>
@@ -86,12 +88,13 @@ export default function LoginCard({ className }: LoginCardProps) {
             value={password}
             name="password"
             type="password"
-            className="mb-10 w-80 h-12" // set border to red when there is an error.
+            className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
           />
           <ButtonBase
             type="submit"
             onClick={handleLogin}
-            className="text-lg font-bold w-80 h-12 text-white rounded bg-green-600"
+            disabled={isLoggingIn}
+            className="text-lg font-bold w-80 h-12 text-white rounded bg-green-600" 
           >
             { isLoggingIn ? <PulseLoader size={8} color="#ffffff"/> : <p>Log In</p>}
           </ButtonBase>
