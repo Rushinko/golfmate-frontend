@@ -25,7 +25,7 @@ export default function TextInput({
   return (
     <div className="flex flex-col justify-start items-start">
     {
-      label !== null ? (<label className="w-32 h-6 text-sm font-semibold">{label}</label>
+      label !== null ? (<label className="w-32 h-6 text-sm font-semibold dark:text-zinc-100">{label}</label>
       ): (<></>)
     }
       <input
@@ -35,7 +35,7 @@ export default function TextInput({
         value={value}
         name={name}
         type={type}
-        className={`border px-3 py-2 border-gray-300 rounded-md focus:outline-green-600 ${className}`}
+        className={`border px-3 py-2 border-zinc-700 dark:bg-panelAccent dark:focus:ring-0 ring-0 rounded-md outline-none focus:border-green-700 dark:text-zinc-100 dark:caret-zinc-100 ${className}`}
         {...rest}
       />
     </div>

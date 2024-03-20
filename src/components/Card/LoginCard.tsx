@@ -6,6 +6,7 @@ import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import { login } from "../../api/api";
 import logo from "../../assets/golfmate.png";
 import { PulseLoader } from "react-spinners";
+import { LoginCardBase } from "./LoginCardBase";
 
 type LoginCardProps = {
   className?: string;
@@ -30,13 +31,10 @@ export default function LoginCard({ className }: LoginCardProps) {
     if (res.status === 401) {
       // do something
     }
-    setErrorMessage(
-      "Error with login. Please check your eamil or password"
-    );
-  }
+    setErrorMessage("Error with login. Please check your eamil or password");
+  };
 
   const handleLogin = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(email, password);
     event.preventDefault();
     setIsLoggingIn(true);
     setErrorMessage(null);
@@ -44,11 +42,11 @@ export default function LoginCard({ className }: LoginCardProps) {
       .then((res) => {
         setIsLoggingIn(false);
         if (!res.ok) {
-          handleLoginError(res)
+          handleLoginError(res);
           return false;
         }
         setErrorMessage(null);
-        navigate('/home')
+        navigate("/home");
         // redirect after successful login
       })
       .catch((error: Error) => {
@@ -59,59 +57,71 @@ export default function LoginCard({ className }: LoginCardProps) {
     return false;
   };
 
-  return (
-    <CardBase className={className}>
-      <div className="text-3xl flex flex-row font-sans mb-4">
-        <span className="font-extrabold">GOLF</span>MATE
-      </div>
-      <span>
-        <div className="text-2xl font-sans">Login</div>
-      </span>
-      <div className="flex flex-col justify-start items-center my-8">
-        {!errorMessage ? (
-          <div className="h-10" />
-        ) : (
-          <div className="text-red-600 text-sm text-center">{errorMessage}</div>
-        )}
-        <form>
-          <TextInput
-            label="Email Address"
-            onChange={handleEmailChange}
-            value={email}
-            name="email"
-            type="email"
-            className="mb-4 w-80 h-12" // set border to red when there is an error.
-          />
-          <TextInput
-            label="Password"
-            onChange={handlePasswordChange}
-            value={password}
-            name="password"
-            type="password"
-            className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
-          />
-          <ButtonBase
-            type="submit"
-            onClick={handleLogin}
-            disabled={isLoggingIn}
-            className="text-lg font-bold w-80 h-12 text-white rounded bg-green-600" 
-          >
-            { isLoggingIn ? <PulseLoader size={8} color="#ffffff"/> : <p>Log In</p>}
-          </ButtonBase>
-        </form>
-        <span className="mt-4 mb-2">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-green-700 hover:">
-            Register here
-          </Link>
-        </span>
-        <Link
-          to="/recover"
-          className=" text-green-700 underline font-light text-sm"
-        >
-          Forgot Your Password?
+  const title = (
+    <span>
+      <span className="font-extrabold text-green-700">GOLF</span>MATE
+    </span>
+  );
+  const subtitle = <div className="text-2xl font-sans">Login</div>;
+  const footer = (
+    <>
+      <span className="mt-4 mb-2">
+        Don't have an account?{" "}
+        <Link to="/register" className="text-green-700 hover:">
+          Register here
         </Link>
-      </div>
-    </CardBase>
+      </span>
+      <Link
+        to="/recover"
+        className=" text-green-700 underline font-light text-sm"
+      >
+        Forgot Your Password?
+      </Link>
+    </>
+  );
+
+  return (
+    <LoginCardBase
+      title={title}
+      subtitle={subtitle}
+      footer={footer}
+      className={className}
+    >
+      {!errorMessage ? (
+        <div className="h-10" />
+      ) : (
+        <div className="text-red-600 text-sm text-center">{errorMessage}</div>
+      )}
+      <form>
+        <TextInput
+          label="Email Address"
+          onChange={handleEmailChange}
+          value={email}
+          name="email"
+          type="email"
+          className="mb-4 w-80 h-12" // set border to red when there is an error.
+        />
+        <TextInput
+          label="Password"
+          onChange={handlePasswordChange}
+          value={password}
+          name="password"
+          type="password"
+          className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
+        />
+        <ButtonBase
+          type="submit"
+          onClick={handleLogin}
+          disabled={isLoggingIn}
+          className="text-lg font-bold w-80 h-12 text-white rounded bg-green-600"
+        >
+          {isLoggingIn ? (
+            <PulseLoader size={8} color="#ffffff" />
+          ) : (
+            <p>Log In</p>
+          )}
+        </ButtonBase>
+      </form>
+    </LoginCardBase>
   );
 }

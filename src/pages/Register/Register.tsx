@@ -22,7 +22,7 @@ function Register() {
   return (
     image && (
       <div
-        className="h-full w-full flex justify-center items-center backdrop-blur-sm bg-green-700/10"
+        className="h-full w-full flex justify-center items-center backdrop-blur-sm bg-black/50"
         style={{ backgroundImage: `url(${image})`, backgroundSize: "cover", backgroundBlendMode: 'overlay', backgroundPositionY: "bottom" }}
       >
         <RegisterCard />

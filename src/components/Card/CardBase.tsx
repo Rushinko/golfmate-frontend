@@ -9,7 +9,7 @@ type CardBaseProps = {
 export default function CardBase({ align = 'start', className, children }: PropsWithChildren<CardBaseProps>) {
   return (
     <div
-      className={`w-96 h-[496] p-8 justify-${align} items-center flex-col rounded-xl bg-white backdrop-blur-sm shadow-md flex ${className}`}
+      className={`w-96 h-[496] p-8 justify-${align} items-center flex-col rounded-xl bg-white dark:bg-panel backdrop-blur-sm shadow-md flex ${className}`}
     >
       {children}
     </div>

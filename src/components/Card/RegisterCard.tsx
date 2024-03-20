@@ -5,6 +5,7 @@ import CardBase from "./CardBase";
 import { ChangeEvent, useState } from "react";
 import { login, register } from "../../api/api";
 import { PulseLoader } from "react-spinners";
+import { LoginCardBase } from "./LoginCardBase";
 
 type RegisterCardProps = {
   className?: string;
@@ -72,95 +73,104 @@ export default function RegisterCard({ className }: RegisterCardProps) {
       })
       .finally(() => {
         setIsRegistering(false);
-      })
+      });
     return false;
   };
 
+  const title = (
+    <span>
+      <span className="font-extrabold text-green-700">GOLF</span>MATE
+    </span>
+  );
+
+  const subtitle = (
+    <div className="text-2xl font-sans dark:text-zinc-100">Register</div>
+  );
+
+  const footer = (
+    <span className="mt-4 mb-2 dark:text-zinc-100">
+      Already have an account?{" "}
+      <Link to="/login" className="text-green-600 hover:">
+        Log in here
+      </Link>
+    </span>
+  );
+
   return (
-    <CardBase className={className}>
-      <div className="text-3xl flex flex-row font-sans mb-4">
-        <span className="font-extrabold">GOLF</span>MATE
-      </div>
-      <span>
-        <div className="text-2xl font-sans">Register</div>
-      </span>
-      <div className="flex flex-col justify-start items-center mt-8 mb-4">
-        {!errorMessage ? (
-          <div className="h-10" />
-        ) : (
-          <div className="text-red-600 text-sm text-center mb-4 h-6">
-            {errorMessage}
-          </div>
-        )}
-        <form onSubmit={handleRegister}>
-          <div className="flex flex-row ">
-            <TextInput
-              label="First Name"
-              onChange={handleFirstNameChange}
-              value={firstName}
-              name="firstName"
-              type="text"
-              required
-              className="mb-4 w-40 h-12" // set border to red when there is an error.
-            />
-            {/* <div className="w-8" /> */}
-            <TextInput
-              label="Last Name"
-              onChange={handleLastNameChange}
-              value={lastName}
-              name="lastName"
-              type="text"
-              required
-              className="mb-4 w-40  h-12" // set border to red when there is an error.
-            />
-          </div>
+    <LoginCardBase
+      title={title}
+      subtitle={subtitle}
+      footer={footer}
+      className={className}
+    >
+      {!errorMessage ? (
+        <div className="h-10" />
+      ) : (
+        <div className="text-red-600 text-sm text-center mb-4 h-6">
+          {errorMessage}
+        </div>
+      )}
+      <form onSubmit={handleRegister}>
+        <div className="flex flex-row ">
           <TextInput
-            label="Email Address"
-            onChange={handleEmailChange}
-            value={email}
-            name="email"
-            type="email"
+            label="First Name"
+            onChange={handleFirstNameChange}
+            value={firstName}
+            name="firstName"
+            type="text"
             required
-            className="mb-4 w-80 h-12" // set border to red when there is an error.
+            className="mb-4 w-38 h-12 mr-2" // set border to red when there is an error.
           />
+          {/* <div className="w-8" /> */}
           <TextInput
-            label="Password"
-            onChange={handlePasswordChange}
-            value={password}
-            name="password"
-            type="password"
+            label="Last Name"
+            onChange={handleLastNameChange}
+            value={lastName}
+            name="lastName"
+            type="text"
             required
-            className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
+            className="mb-4 w-38 h-12 ml-2" // set border to red when there is an error.
           />
-          <TextInput
-            label="Confirm Password"
-            onChange={handlePasswordConfirmChange}
-            value={passwordConfirm}
-            name="confirmPassword"
-            type="password"
-            required
-            className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
-          />
-          <ButtonBase
-            type="submit"
-            onClick={handleRegister}
-            disabled={isRegistering}
-            className="text-lg font-bold w-80 h-12 text-white rounded bg-green-600"
-          >
-            {isRegistering ? (
-              <PulseLoader size={8} color="#ffffff" />
-            ) : (
-              <p>Register</p>
-            )}
-          </ButtonBase>
-        </form>
-        <span className="mt-4 mb-2">
-          Already have an account?{" "}
-          <Link to="/login" className="text-green-700 hover:">
-            Log in here
-          </Link>
-        </span>
-      </div>
-    </CardBase>
+        </div>
+        <TextInput
+          label="Email Address"
+          onChange={handleEmailChange}
+          value={email}
+          name="email"
+          type="email"
+          required
+          className="mb-4 w-80 h-12" // set border to red when there is an error.
+        />
+        <TextInput
+          label="Password"
+          onChange={handlePasswordChange}
+          value={password}
+          name="password"
+          type="password"
+          required
+          className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
+        />
+        <TextInput
+          label="Confirm Password"
+          onChange={handlePasswordConfirmChange}
+          value={passwordConfirm}
+          name="confirmPassword"
+          type="password"
+          required
+          className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
+        />
+        <ButtonBase
+          type="submit"
+          disabled={isRegistering}
+          className="text-lg font-bold w-80 h-12 text-white dark:text-zinc-100 rounded bg-green-700 dark:bg-green-700"
+        >
+          {isRegistering ? (
+            <PulseLoader size={8} color="#ffffff" />
+          ) : (
+            <p>Register</p>
+          )}
+        </ButtonBase>
+      </form>
+    </LoginCardBase>
   );
 }

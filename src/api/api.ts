@@ -1,3 +1,4 @@
+import axios from "axios";
 import { TRegisterForm } from "../models/types";
 
 type loginProps = {
@@ -5,13 +6,16 @@ type loginProps = {
   password: string;
 };
 
+
 export async function register(props: TRegisterForm): Promise<Response> {
-  const res = await fetch("http://localhost:3000/users", {
+
+  return axios({
+    url: "http://localhost:3000/users",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
+    data: {
       user: {
         first_name: props.first_name,
         last_name: props.last_name,
@@ -19,9 +23,24 @@ export async function register(props: TRegisterForm): Promise<Response> {
         password: props.password,
         password_confirmation: props.password_confirmation,
       },
-    }),
+    }
   });
-  return res;
+  // const res = await fetch("http://localhost:3000/users", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     user: {
+  //       first_name: props.first_name,
+  //       last_name: props.last_name,
+  //       email: props.email,
+  //       password: props.password,
+  //       password_confirmation: props.password_confirmation,
+  //     },
+  //   }),
+  // });
+  // return res;
 }
 
 export async function login(email: string, password: string): Promise<Response> {
@@ -52,4 +71,8 @@ export async function getUser() {
 export async function getGolfCourseImage() {
   const res = await fetch("http://localhost:3000/api/v1/golfcourse_image")
   return res;
+}
+
+export async function getGolfCourses() {
+
 }
