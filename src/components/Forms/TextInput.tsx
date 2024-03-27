@@ -9,6 +9,7 @@ interface TextInputProps  extends React.ComponentPropsWithoutRef<"input">{
   label?: string,
   className?: string,
   placeholder?: string,
+  error?: boolean,
 };
 
 export default function TextInput({
@@ -20,6 +21,7 @@ export default function TextInput({
   label,
   className,
   placeholder,
+  error = false,
   ...rest
 }: TextInputProps) {
   return (
@@ -35,7 +37,7 @@ export default function TextInput({
         value={value}
         name={name}
         type={type}
-        className={`border px-3 py-2 border-zinc-700 dark:bg-panelAccent dark:focus:ring-0 ring-0 rounded-md outline-none focus:border-green-700 dark:text-zinc-100 dark:caret-zinc-100 ${className}`}
+        className={`border px-3 py-2 ${error ? 'border-red-600 dark:border-red-500' : 'border-zinc-700 dark:border-zinc-700' }border-zinc-700 dark:bg-panelAccent dark:focus:ring-0 ring-0 rounded-md outline-none focus:border-green-700 dark:text-zinc-100 dark:caret-zinc-100 ${className}`}
         {...rest}
       />
     </div>

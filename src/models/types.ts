@@ -1,11 +1,16 @@
 import { IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
 import { HomeIcon } from "@radix-ui/react-icons";
 
-type TUser = {
-  first_name: string,
-  last_name: string,
+export type TUser = {
+  created_at: string,
   email: string,
-}
+  first_name: string,
+  id: number,
+  jti: string,
+  last_name: string,
+  updated_at: string,
+  username: string | null,
+};
 
 export type TIcon = typeof HomeIcon
 

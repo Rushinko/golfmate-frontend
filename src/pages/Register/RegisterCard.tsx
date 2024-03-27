@@ -1,15 +1,18 @@
-import TextInput from "../Forms/TextInput";
-import ButtonBase from "../Buttons/ButtonBase";
+import TextInput from "../../components/Forms/TextInput";
+import ButtonBase from "../../components/Buttons/ButtonBase";
 import { Link, useNavigate } from "react-router-dom";
-import CardBase from "./CardBase";
+import CardBase from "../../components/Card/CardBase";
 import { ChangeEvent, useState } from "react";
 import { login, register } from "../../api/api";
 import { PulseLoader } from "react-spinners";
-import { LoginCardBase } from "./LoginCardBase";
+import { LoginCardBase } from "../../components/Card/LoginCardBase";
+import { ErrorMessage } from "../../components/Card/ErrorMessage";
 
 type RegisterCardProps = {
   className?: string;
 };
+
+const PASSWORD_MATCH_ERROR = "Passwords do not match";
 
 export default function RegisterCard({ className }: RegisterCardProps) {
   // const navigate = useNavigate();
@@ -33,6 +36,9 @@ export default function RegisterCard({ className }: RegisterCardProps) {
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setPasswordConfirm(event.target.value);
+    if (errorMessage === PASSWORD_MATCH_ERROR) {
+      setErrorMessage(null);
+    }
   };
 
   const handleFirstNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +47,10 @@ export default function RegisterCard({ className }: RegisterCardProps) {
 
   const handleLastNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setLastName(event.target.value);
+  };
+
+  const getErrorMessage = (status: number) => {
+
   };
 
   const handleLoginError = (res: Response) => {
@@ -55,7 +65,8 @@ export default function RegisterCard({ className }: RegisterCardProps) {
     setIsRegistering(true);
     event.preventDefault();
     if (password !== passwordConfirm) {
-      setErrorMessage("Passwords do not match");
+      setErrorMessage(PASSWORD_MATCH_ERROR);
+      setIsRegistering(false);
       return false;
     }
     register({
@@ -67,9 +78,13 @@ export default function RegisterCard({ className }: RegisterCardProps) {
     })
       .then((res) => {
         console.log(res);
+        
       })
       .catch((err) => {
-        console.error(err);
+        console.error(err.response.status);
+        if (err.response.status === 422) {
+          setErrorMessage("This email address was already used to register an account")
+        }
       })
       .finally(() => {
         setIsRegistering(false);
@@ -103,13 +118,7 @@ export default function RegisterCard({ className }: RegisterCardProps) {
       footer={footer}
       className={className}
     >
-      {!errorMessage ? (
-        <div className="h-10" />
-      ) : (
-        <div className="text-red-600 text-sm text-center mb-4 h-6">
-          {errorMessage}
-        </div>
-      )}
+      <ErrorMessage message={errorMessage} />
       <form onSubmit={handleRegister}>
         <div className="flex flex-row ">
           <TextInput
@@ -148,7 +157,7 @@ export default function RegisterCard({ className }: RegisterCardProps) {
           name="password"
           type="password"
           required
-          className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
+          className={`mb-4 w-80 h-12 `} // set border to red when there is an error.
         />
         <TextInput
           label="Confirm Password"
@@ -157,6 +166,7 @@ export default function RegisterCard({ className }: RegisterCardProps) {
           name="confirmPassword"
           type="password"
           required
+          error={errorMessage === PASSWORD_MATCH_ERROR}
           className={`mb-10 w-80 h-12 `} // set border to red when there is an error.
         />
         <ButtonBase

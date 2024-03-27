@@ -1,15 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { pagesConfig } from "../pagesConfig";
+import { managePagesConfig } from "../Admin/adminPagesConfig";
+import { AuthHandler } from "../../components/Auth/AuthHanlder";
+import Topbar from "../../components/Topbar/Topbar";
 
 export function Root() {
   return (
-    <div className="h-full w-full flex flex-row">
-      <Sidebar pages={pagesConfig} />
-      <div className="w-full h-full bg-gray-50 dark:bg-backdropDark dark:text-zinc-100 p-4">
-        <Outlet />
-      </div>
-    </div>
+    <>
+      <AuthHandler />
+      <Outlet />
+    </>
   );
 }
 

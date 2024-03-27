@@ -1,12 +1,14 @@
-import TextInput from "../Forms/TextInput";
-import ButtonBase from "../Buttons/ButtonBase";
+import TextInput from "../../components/Forms/TextInput";
+import ButtonBase from "../../components/Buttons/ButtonBase";
 import { Link, useNavigate } from "react-router-dom";
-import CardBase from "./CardBase";
+import CardBase from "../../components/Card/CardBase";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
-import { login } from "../../api/api";
+import { handleSuccessfulLogin, login } from "../../api/api";
 import logo from "../../assets/golfmate.png";
 import { PulseLoader } from "react-spinners";
-import { LoginCardBase } from "./LoginCardBase";
+import { LoginCardBase } from "../../components/Card/LoginCardBase";
+import { ErrorMessage } from "../../components/Card/ErrorMessage";
+import { AxiosError, AxiosResponse } from "axios";
 
 type LoginCardProps = {
   className?: string;
@@ -27,7 +29,7 @@ export default function LoginCard({ className }: LoginCardProps) {
     setPassword(event.target.value);
   };
 
-  const handleLoginError = (res: Response) => {
+  const handleLoginError = (res: AxiosError) => {
     if (res.status === 401) {
       // do something
     }
@@ -41,17 +43,19 @@ export default function LoginCard({ className }: LoginCardProps) {
     login(email, password)
       .then((res) => {
         setIsLoggingIn(false);
-        if (!res.ok) {
-          handleLoginError(res);
+        if (res.status !== 200) {
           return false;
         }
-        setErrorMessage(null);
-        navigate("/home");
-        // redirect after successful login
+        if (handleSuccessfulLogin(res) !== undefined) {
+          // redirect after successful login
+          setErrorMessage(null);
+          navigate("/home");
+        }
       })
-      .catch((error: Error) => {
+      .catch((error: AxiosError) => {
         // handle errors?
-        setErrorMessage(error.message);
+        handleLoginError(error);
+        setIsLoggingIn(false);
         console.error(error);
       });
     return false;
@@ -87,11 +91,7 @@ export default function LoginCard({ className }: LoginCardProps) {
       footer={footer}
       className={className}
     >
-      {!errorMessage ? (
-        <div className="h-10" />
-      ) : (
-        <div className="text-red-600 text-sm text-center">{errorMessage}</div>
-      )}
+      <ErrorMessage message={errorMessage} />
       <form>
         <TextInput
           label="Email Address"
@@ -113,7 +113,7 @@ export default function LoginCard({ className }: LoginCardProps) {
           type="submit"
           onClick={handleLogin}
           disabled={isLoggingIn}
-          className="text-lg font-bold w-80 h-12 text-white rounded bg-green-600"
+          className="text-lg font-bold w-80 h-12 text-white rounded bg-green-700"
         >
           {isLoggingIn ? (
             <PulseLoader size={8} color="#ffffff" />

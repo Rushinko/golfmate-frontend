@@ -2,7 +2,7 @@ import * as React from "react";
 import { getGolfCourseImage } from "../../api/api";
 import { type Image } from "../../models/types";
 import image from '../../assets/golfcourse.jpeg'
-import RegisterCard from "../../components/Card/RegisterCard";
+import RegisterCard from "./RegisterCard";
 
 function Register() {
   const [backgroundImg, setBackgroundImg] = React.useState<Image | null>(null);
